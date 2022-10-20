@@ -17,7 +17,7 @@
 	});
 </script>
 
-<div class="max-w-6xl mx-auto mt-24">
+<div class="max-w-6xl mx-auto mt-24 px-12">
 	<div class="flex flex-col">
 		<div class="grid grid-cols-2">
 			<div>
@@ -26,20 +26,25 @@
 			<UserBoxForm boxes={data.boxes} />
 		</div>
 		<div class="mt-4">
-			<p>Suggested Boxes:</p>
-			<div class="grid grid-cols-3 divide-y-8 divide-transparent mt-2 border-t-2 border-gray-500">
+			<p class="font-semibold">Suggested Boxes</p>
+			<div class="grid grid-cols-3 mt-1 border-t-2 border-gray-500">
 				{#each suitableBoxes as suitableBox (suitableBox.id)}
-					<div>
-						<p class="font-semibold">{suitableBox.box_name}</p>
-						<p>{suitableBox.box_length}x{suitableBox.box_width}x{suitableBox.box_height}</p>
+					<div class="mt-1">
+						<p class="font-semibold">
+							{suitableBox.box_name}
+							{#if suitableBox.twistingRequired}
+								<span class="italic">(Twisting required)</span>
+							{/if}
+						</p>
+						<p>{suitableBox.box_length}x{suitableBox.box_width}x{suitableBox.box_height} cm</p>
 						<p>
 							Volumetric: {(suitableBox.box_length *
 								suitableBox.box_width *
 								suitableBox.box_height) /
 								5000}
 						</p>
-						<p>Height To Cut: {suitableBox.heightToCut}</p>
-						<p>Twisting required: {suitableBox.twistingRequired}</p>
+
+						<p>Height to cut: {suitableBox.heightToCut}</p>
 						<p>
 							Volumetric after cutting: {(suitableBox.box_length *
 								suitableBox.box_width *

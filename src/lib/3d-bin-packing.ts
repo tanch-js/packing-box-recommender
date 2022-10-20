@@ -40,7 +40,9 @@ export const putItem = (box: boxType, item: itemType) => {
 	let lowestItemHeight = 0;
 	let twistingRequired = false;
 	for (const rotation of ROTATION_TYPES) {
-		const dimensions = getRotatedItemDimensions(item, rotation);
+		const dimensions = getRotatedItemDimensions(item, rotation).map(
+			(ele) => ele + item.fragileBuffer ?? 0
+		);
 		if (!itemFitTwistedBox(box, dimensions)) {
 			continue;
 		}
