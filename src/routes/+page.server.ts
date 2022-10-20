@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 import { getUserBoxes } from '$lib/server/db';
 
 export const load: PageServerLoad = async () => {
-	const boxes = await getUserBoxes('1989');
+	const boxes = await getUserBoxes('2986');
 	if (boxes) {
 		return { boxes };
 	}
