@@ -40,13 +40,11 @@ export const putItem = (box: boxType, item: itemType) => {
 	let lowestItemHeight = 0;
 	let twistingRequired = false;
 	for (const rotation of ROTATION_TYPES) {
-		twistingRequired = false;
 		const dimensions = getRotatedItemDimensions(item, rotation);
 		if (!itemFitTwistedBox(box, dimensions)) {
 			continue;
 		}
 		twistingRequired = !itemFit(box, dimensions);
-		console.log('twisting required:', twistingRequired);
 		if (dimensions[1] < lowestItemHeight || lowestItemHeight === 0) {
 			lowestItemHeight = dimensions[1];
 		}

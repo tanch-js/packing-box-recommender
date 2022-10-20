@@ -17,8 +17,6 @@
 	});
 </script>
 
-<h1 class="text-red-500">Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 <div class="max-w-6xl mx-auto mt-24">
 	<div class="flex flex-col">
 		<div class="grid grid-cols-2">
@@ -29,7 +27,7 @@
 		</div>
 		<div class="mt-4">
 			<p>Suggested Boxes:</p>
-			<div class="grid grid-cols-3 divide-y-8 divide-transparent mt-2">
+			<div class="grid grid-cols-3 divide-y-8 divide-transparent mt-2 border-t-2 border-gray-500">
 				{#each suitableBoxes as suitableBox (suitableBox.id)}
 					<div>
 						<p class="font-semibold">{suitableBox.box_name}</p>
