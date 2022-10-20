@@ -1,4 +1,4 @@
-import type { boxType, itemType } from '../types';
+import type { boxType, itemType, suitableBoxType } from '../types';
 import { putItem } from './3d-bin-packing';
 /* 
 Assumptions:
@@ -20,10 +20,11 @@ export const packingBoxRecommender = (item: itemType, boxes: boxType[]) => {
 			}
 			return 0;
 		});
-	const suitableBoxes: boxType[] = [];
+	const suitableBoxes: suitableBoxType[] = [];
 	for (const box of sortedBoxes) {
-		if (putItem(box, item)) {
-			suitableBoxes.push(box);
+		const { itemFit, heightToCut, twistingRequired } = putItem(box, item);
+		if (itemFit) {
+			suitableBoxes.push({ ...box, heightToCut, twistingRequired });
 			if (suitableBoxes.length === 3) {
 				break;
 			}

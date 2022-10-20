@@ -11,3 +11,13 @@ export type itemType = {
 	width: number;
 	height: number;
 };
+
+export type suitableBoxType = {
+    id: string;
+	box_name: string;
+	box_length: number;
+	box_width: number;
+	box_height: number;
+    heightToCut: number;
+    twistingRequired: boolean
+}

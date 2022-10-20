@@ -23,7 +23,6 @@ export const getUserBoxes = async (userID: string) => {
 	try {
 		const query = `SELECT id, box_name, box_length, box_width, box_height FROM WjQ_sfa_box_size WHERE user_id=?`;
 		const [rows] = await WP_CONN.execute(query, [userID]);
-
 		return rows;
 	} catch (err) {
 		console.log(err);

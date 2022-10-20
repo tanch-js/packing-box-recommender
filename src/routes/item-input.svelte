@@ -1,5 +1,5 @@
 <script>
-    	/** @type {import('../types').itemType} */ export let item 
+	/** @type {import('../types').itemType} */ export let item;
 	let fragileBuffer = 0;
 </script>
 
@@ -23,5 +23,6 @@
 			<input type="range" bind:value={item.height} min="0" max="100" />
 		</label>
 	</div>
+	<p>Volumetric: {(item.length * item.width * item.height) / 5000}</p>
 	<div>Fragile Buffer: <input type="number" bind:value={fragileBuffer} min="0" /></div>
 </div>

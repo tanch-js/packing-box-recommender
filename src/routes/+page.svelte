@@ -4,11 +4,11 @@
 	import ItemInput from './item-input.svelte';
 	import { packingBoxRecommender } from '$lib/packing-box-recommender';
 	/** @type {import('../types').itemType} */ let item = {
-		length: 1,
-		width: 2,
-		height: 3
+		length: 10,
+		width: 10,
+		height: 10
 	};
-	/** @type {import('../types').boxType[]} */ let suitableBoxes = [];
+	/** @type {import('../types').suitableBoxType[]} */ let suitableBoxes = [];
 </script>
 
 <h1 class="text-red-500">Welcome to SvelteKit</h1>
@@ -16,7 +16,9 @@
 <div class="grid grid-cols-2 max-w-6xl mx-auto mt-24">
 	<div>
 		<ItemInput bind:item />
-		<button class="mt-4 border bg-gray-200 py-1 px-2 active:bg-gray-300" on:click={() => (suitableBoxes = packingBoxRecommender(item, data.boxes))}
+		<button
+			class="mt-4 border bg-gray-200 py-1 px-2 active:bg-gray-300"
+			on:click={() => (suitableBoxes = packingBoxRecommender(item, data.boxes))}
 			>Recommend some boxes</button
 		>
 		<div class="mt-4">
@@ -30,6 +32,14 @@
 							Volumetric: {(suitableBox.box_length *
 								suitableBox.box_width *
 								suitableBox.box_height) /
+								5000}
+						</p>
+						<p>Height To Cut: {suitableBox.heightToCut}</p>
+						<p>Twisting required: {suitableBox.twistingRequired}</p>
+						<p>
+							Volumetric after cutting: {(suitableBox.box_length *
+								suitableBox.box_width *
+								(suitableBox.box_height - suitableBox.heightToCut)) /
 								5000}
 						</p>
 					</div>
