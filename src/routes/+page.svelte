@@ -7,13 +7,16 @@
 	/** @type {import('../types').itemType} */ let item = {
 		length: 10,
 		width: 10,
-		height: 10,
+		height: 6,
+		weight: 2,
 		fragileBuffer: 0
 	};
 	/** @type {import('../types').suitableBoxType[]} */ let suitableBoxes = [];
 
+    let numberOfSolutions = 3;
+
 	afterUpdate(() => {
-		suitableBoxes = packingBoxRecommender(item, data.boxes);
+		suitableBoxes = packingBoxRecommender(item, data.boxes, numberOfSolutions);
 	});
 </script>
 
@@ -21,13 +24,13 @@
 	<div class="flex flex-col">
 		<div class="grid grid-cols-2">
 			<div>
-				<ItemInput bind:item />
+				<ItemInput bind:item bind:numberOfSolutions={numberOfSolutions}/>
 			</div>
 			<UserBoxForm boxes={data.boxes} />
 		</div>
-		<div class="mt-4">
+		<div class="mt-16">
 			<p class="font-semibold">Suggested Boxes</p>
-			<div class="grid grid-cols-3 mt-1 border-t-2 border-gray-500">
+			<div class="grid grid-cols-3 mt-1 border-t-2 border-gray-500 gap-y-4 divide-black">
 				{#each suitableBoxes as suitableBox (suitableBox.id)}
 					<div class="mt-1">
 						<p class="font-semibold">
@@ -36,21 +39,24 @@
 								<span class="italic">(Twisting required)</span>
 							{/if}
 						</p>
-						<p>{suitableBox.box_length}x{suitableBox.box_width}x{suitableBox.box_height} cm</p>
 						<p>
-							Volumetric: {(suitableBox.box_length *
-								suitableBox.box_width *
-								suitableBox.box_height) /
-								5000}
+							{suitableBox.box_length}x{suitableBox.box_width}x{suitableBox.box_height}
+							{#if suitableBox.twistingRequired}
+								→ {suitableBox.twistedLength}x{suitableBox.twistedWidth}x{suitableBox.box_height}
+							{/if}
 						</p>
-
-						<p>Height to cut: {suitableBox.heightToCut}</p>
 						<p>
-							Volumetric after cutting: {(suitableBox.box_length *
-								suitableBox.box_width *
-								(suitableBox.box_height - suitableBox.heightToCut)) /
-								5000}
+							Volumetric: {suitableBox.volumetric.toFixed(2)}
 						</p>
+						{#if suitableBox.heightToCut > 0}
+							<p>Height to cut: {suitableBox.heightToCut}</p>
+							<p>
+								Volumetric after cutting: {(suitableBox.box_length *
+									suitableBox.box_width *
+									(suitableBox.box_height - suitableBox.heightToCut)) /
+									5000}
+							</p>
+						{/if}
 					</div>
 				{/each}
 			</div>
