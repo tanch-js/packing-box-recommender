@@ -22,7 +22,7 @@ const getRotatedItemDimensions = (item: itemType, rotation: string) => {
 	}
 };
 
-const itemFit = (box: boxType, dimensions: number[]) => {
+const itemFitNormalBox = (box: boxType, dimensions: number[]) => {
 	return (
 		box.box_width >= dimensions[0] &&
 		box.box_height >= dimensions[1] &&
@@ -38,6 +38,7 @@ const itemFitTwistedBox = (box: boxType, dimensions: number[]) => {
 };
 
 export const putItem = (box: boxType, item: itemType) => {
+	let canFit = false;
 	let lowestItemHeight = 0;
 	let twistingRequired = false;
 	let twistedLength = 0,
@@ -49,9 +50,21 @@ export const putItem = (box: boxType, item: itemType) => {
 		if (!itemFitTwistedBox(box, dimensions)) {
 			continue;
 		}
-		twistingRequired = !itemFit(box, dimensions);
 
-		if (dimensions[1] < lowestItemHeight || lowestItemHeight === 0) {
+		twistingRequired = !itemFitNormalBox(box, dimensions);
+		if (box.box_name.includes('Fedex')) {
+			if (!twistingRequired) {
+				canFit = true;
+				break;
+			}
+		} else {
+			canFit = true;
+		}
+
+		if (
+			!box.box_name.includes('Fedex') &&
+			(dimensions[1] < lowestItemHeight || lowestItemHeight === 0)
+		) {
 			lowestItemHeight = dimensions[1];
 			if (twistingRequired) {
 				const twistedDimensions = getTwistedBoxDimensions(box, dimensions);
@@ -61,8 +74,8 @@ export const putItem = (box: boxType, item: itemType) => {
 		}
 	}
 	return {
-		itemFit: Boolean(lowestItemHeight),
-		heightToCut: box.box_height - lowestItemHeight,
+		itemFit: canFit,
+		heightToCut: box.box_name.includes('Fedex') ? 0 : box.box_height - lowestItemHeight,
 		twistingRequired,
 		twistedLength,
 		twistedWidth

@@ -13,7 +13,7 @@
 	};
 	/** @type {import('../types').suitableBoxType[]} */ let suitableBoxes = [];
 
-    let numberOfSolutions = 3;
+	let numberOfSolutions = 3;
 
 	afterUpdate(() => {
 		suitableBoxes = packingBoxRecommender(item, data.boxes, numberOfSolutions);
@@ -24,7 +24,7 @@
 	<div class="flex flex-col">
 		<div class="grid grid-cols-2">
 			<div>
-				<ItemInput bind:item bind:numberOfSolutions={numberOfSolutions}/>
+				<ItemInput bind:item bind:numberOfSolutions />
 			</div>
 			<UserBoxForm boxes={data.boxes} />
 		</div>
