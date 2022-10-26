@@ -18,4 +18,19 @@
 			</div>
 		{/each}
 	</div>
+	<div class="">
+		<p>Steps to update boxes</p>
+		<ol class="list-decimal">
+			<li>
+				Go to <a
+					class="text-blue-500"
+					href="https://www.justship.sg/dashboard/profile"
+					target="_blank"
+					rel="noopener noreferrer">JustShip my profile page</a
+				>
+			</li>
+			<li>Login with username: csops@justship.sg, <br />password: ...</li>
+			<li>Add/update boxes using the form</li>
+		</ol>
+	</div>
 </div>

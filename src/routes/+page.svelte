@@ -1,65 +1,52 @@
 <script>
-	import { afterUpdate } from 'svelte';
 	/** @type {import('./$types').PageData} */ export let data;
-	import UserBoxForm from './user-box-form.svelte';
-	import ItemInput from './item-input.svelte';
-	import { packingBoxRecommender } from '$lib/packing-box-recommender';
-	/** @type {import('../types').itemType} */ let item = {
-		length: 10,
-		width: 10,
-		height: 6,
-		weight: 2,
-		fragileBuffer: 0
-	};
-	/** @type {import('../types').suitableBoxType[]} */ let suitableBoxes = [];
+	import MainApp from './main-app.svelte';
+	import Settings from './settings.svelte';
 
 	let numberOfSolutions = 3;
-
-	afterUpdate(() => {
-		suitableBoxes = packingBoxRecommender(item, data.boxes, numberOfSolutions);
-	});
+	let selectedTabIndex = 0;
 </script>
 
 <div class="max-w-6xl mx-auto mt-24 px-12">
-	<div class="flex flex-col">
-		<div class="grid grid-cols-2">
-			<div>
-				<ItemInput bind:item bind:numberOfSolutions />
-			</div>
-			<UserBoxForm boxes={data.boxes} />
-		</div>
-		<div class="mt-16">
-			<p class="font-semibold">Suggested Boxes</p>
-			<div class="grid grid-cols-3 mt-1 border-t-2 border-gray-500 gap-y-4 divide-black">
-				{#each suitableBoxes as suitableBox (suitableBox.id)}
-					<div class="mt-1">
-						<p class="font-semibold">
-							{suitableBox.box_name}
-							{#if suitableBox.twistingRequired}
-								<span class="italic">(Twisting required)</span>
-							{/if}
-						</p>
-						<p>
-							{suitableBox.box_length}x{suitableBox.box_width}x{suitableBox.box_height}
-							{#if suitableBox.twistingRequired}
-								→ {suitableBox.twistedLength}x{suitableBox.twistedWidth}x{suitableBox.box_height}
-							{/if}
-						</p>
-						<p>
-							Volumetric: {suitableBox.volumetric.toFixed(2)}
-						</p>
-						{#if suitableBox.heightToCut > 0}
-							<p>Height to cut: {suitableBox.heightToCut}</p>
-							<p>
-								Volumetric after cutting: {(suitableBox.box_length *
-									suitableBox.box_width *
-									(suitableBox.box_height - suitableBox.heightToCut)) /
-									5000}
-							</p>
-						{/if}
-					</div>
-				{/each}
-			</div>
-		</div>
+	<div class="grid grid-cols-[repeat(2,100px)] gap-x-0.5 mb-4">
+		<label class={selectedTabIndex === 0 ? 'checked' : ''}>
+			<input type="radio" bind:group={selectedTabIndex} name="selectedTabIndex" value={0} />
+			Main
+		</label>
+		<label class={selectedTabIndex === 1 ? 'checked' : ''}>
+			<input type="radio" bind:group={selectedTabIndex} name="selectedTabIndex" value={1} />
+			Settings
+		</label>
 	</div>
+	{#if selectedTabIndex === 0}
+		<MainApp {numberOfSolutions} boxes={data.boxes} />
+	{:else if selectedTabIndex === 1}
+		<Settings bind:numberOfSolutions boxes={data.boxes} />
+	{/if}
 </div>
+
+<style>
+	label {
+		user-select: none;
+		display: flex;
+		gap: 2px;
+		justify-content: center;
+		background: #e2e8f0;
+		color: #64748b;
+		border: unset;
+		border-radius: 6px;
+		padding: 0.75rem 1.5rem;
+		cursor: pointer;
+	}
+	label:hover {
+		background: #cbd5e1;
+		color: #475569;
+	}
+	label.checked {
+		background: #94a3b8;
+		color: #f1f5f9;
+	}
+	input {
+		appearance: none;
+	}
+</style>
