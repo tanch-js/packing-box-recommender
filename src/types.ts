@@ -18,8 +18,9 @@ export type itemType = {
 export type suitableBoxType = boxType & {
 	heightToCut: number;
 	twistingRequired: boolean;
-	twistedLength: number;
-	twistedWidth: number;
+	lengthToTwist: number;
+	widthToTwist: number;
+	rotatedItemDimensions: { length: number; width: number; height: number };
 };
 
 export type pickupDataType = {

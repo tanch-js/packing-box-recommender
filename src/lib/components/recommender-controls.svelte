@@ -23,6 +23,7 @@
 			fragileBuffer: 0
 		};
 	}
+
 	$: suitableBoxes = packingBoxRecommender(item, boxes, $numberOfSolutions);
 </script>
 
@@ -49,13 +50,48 @@
 							<span class="italic">(Twisting required)</span>
 						{/if}
 					</p>
-					<p>
-						{suitableBox.box_length}x{suitableBox.box_width}x{suitableBox.box_height}
+					<table class="bg-slate-300">
+						<thead>
+							<tr><th /><th>L</th><th>W</th><th>H</th></tr>
+						</thead>
+						<tbody>
+							<tr
+								><th>Box</th>
+								<td
+									>{suitableBox.box_length}
+									{#if suitableBox.twistingRequired}
+										{suitableBox.lengthToTwist > 0 ? ' + ' : ' - '}
+										{Math.abs(suitableBox.lengthToTwist)}
+									{/if}
+								</td>
+								<td
+									>{suitableBox.box_width}
+									{#if suitableBox.twistingRequired}
+										{suitableBox.widthToTwist > 0 ? ' + ' : ' - '}
+										{Math.abs(suitableBox.widthToTwist)}
+									{/if}
+								</td>
+								<td
+									>{suitableBox.box_height}
+									{#if suitableBox.heightToCut > 0}
+										-
+										{suitableBox.heightToCut}
+									{/if}
+								</td>
+							</tr>
+							<tr
+								><th>Item</th><td>{suitableBox.rotatedItemDimensions.length}</td><td
+									>{suitableBox.rotatedItemDimensions.width}</td
+								><td>{suitableBox.rotatedItemDimensions.height}</td></tr
+							>
+						</tbody>
+					</table>
+					<!-- <p>
 						{#if suitableBox.twistingRequired}
 							→ {suitableBox.twistedLength}x{suitableBox.twistedWidth}x{suitableBox.box_height}
 						{/if}
-					</p>
-					<p>
+					</p> -->
+					<p class="mt-1">
 						Volumetric: {suitableBox.volumetric.toFixed(2)}
 					</p>
 					{#if suitableBox.heightToCut > 0}
@@ -72,3 +108,18 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	th {
+		font-weight: 600;
+	}
+	th,
+	td {
+		border-width: 1px;
+		padding: 0.25rem 0.5rem;
+		border-color: rgb(107 114 128);
+	}
+	td {
+		text-align: center;
+	}
+</style>
