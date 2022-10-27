@@ -1,5 +1,5 @@
 import type { boxType, itemType, suitableBoxType } from '../types';
-import { putItem } from './3d-bin-packing';
+import { putItem, getRotatedItemDimensions } from './3d-bin-packing';
 
 export const packingBoxRecommender = (
 	item: itemType,
@@ -19,17 +19,28 @@ export const packingBoxRecommender = (
 		});
 	const fittingBoxes: suitableBoxType[] = [];
 	for (const box of sortedBoxes) {
-		const { itemFit, heightToCut, twistingRequired, twistedLength, twistedWidth } = putItem(
-			box,
-			item
-		);
+		const {
+			itemFit,
+			heightToCut,
+			twistingRequired,
+			lengthToTwist,
+			widthToTwist,
+			optimalItemRotation
+		} = putItem(box, item);
 		if (itemFit) {
+			const [width, height, length] = getRotatedItemDimensions(item, optimalItemRotation);
+			const rotatedItemDimensions = {
+				width: width + item.fragileBuffer,
+				height: height + item.fragileBuffer,
+				length: length + item.fragileBuffer
+			};
 			fittingBoxes.push({
 				...box,
 				heightToCut,
 				twistingRequired,
-				twistedLength,
-				twistedWidth
+				lengthToTwist,
+				widthToTwist,
+				rotatedItemDimensions
 			});
 		}
 	}

@@ -1,9 +1,9 @@
 import type { boxType, itemType } from '../types';
-import { getTwistedBoxDimensions } from './get-twisted-box-dimensions';
+import { getLengthWidthToTwist } from './get-length-width-twist';
 
 const ROTATION_TYPES = ['RT_WHL', 'RT_HWL', 'RT_HLW', 'RT_LHW', 'RT_LWH', 'RT_WLH'];
 
-const getRotatedItemDimensions = (item: itemType, rotation: string) => {
+export const getRotatedItemDimensions = (item: itemType, rotation: string) => {
 	switch (rotation) {
 		case 'RT_WHL':
 			return [item.width, item.height, item.length];
@@ -41,43 +41,49 @@ export const putItem = (box: boxType, item: itemType) => {
 	let canFit = false;
 	let lowestItemHeight = 0;
 	let twistingRequired = false;
-	let twistedLength = 0,
-		twistedWidth = 0;
+	let lengthToTwist = 0,
+		widthToTwist = 0;
+	let optimalItemRotation = ROTATION_TYPES[0];
 	for (const rotation of ROTATION_TYPES) {
 		const dimensions = getRotatedItemDimensions(item, rotation).map(
 			(ele) => ele + item.fragileBuffer ?? 0
 		);
-		if (!itemFitTwistedBox(box, dimensions)) {
-			continue;
-		}
 
-		twistingRequired = !itemFitNormalBox(box, dimensions);
+		//case where box will not be cut/twisted
 		if (box.box_name.includes('Fedex')) {
-			if (!twistingRequired) {
-				canFit = true;
-				break;
+			if (itemFitNormalBox(box, dimensions)) {
+				return {
+					itemFit: true,
+					heightToCut: 0,
+					twistingRequired,
+					lengthToTwist,
+					widthToTwist,
+					optimalItemRotation: rotation
+				};
 			}
 		} else {
+			if (!itemFitTwistedBox(box, dimensions)) {
+				continue;
+			}
 			canFit = true;
-		}
-
-		if (
-			!box.box_name.includes('Fedex') &&
-			(dimensions[1] < lowestItemHeight || lowestItemHeight === 0)
-		) {
-			lowestItemHeight = dimensions[1];
-			if (twistingRequired) {
-				const twistedDimensions = getTwistedBoxDimensions(box, dimensions);
-				twistedLength = twistedDimensions.twistedLength;
-				twistedWidth = twistedDimensions.twistedWidth;
+			if (dimensions[1] < lowestItemHeight || lowestItemHeight === 0) {
+				twistingRequired = !itemFitNormalBox(box, dimensions);
+				optimalItemRotation = rotation;
+				lowestItemHeight = dimensions[1];
+				if (twistingRequired) {
+					const dimensionsToTwist = getLengthWidthToTwist(box, dimensions);
+					lengthToTwist = dimensionsToTwist.lengthToTwist;
+					widthToTwist = dimensionsToTwist.widthToTwist;
+				}
 			}
 		}
 	}
 	return {
 		itemFit: canFit,
-		heightToCut: box.box_name.includes('Fedex') ? 0 : box.box_height - lowestItemHeight,
+		heightToCut: box.box_height - lowestItemHeight,
 		twistingRequired,
-		twistedLength,
-		twistedWidth
+		lengthToTwist,
+		widthToTwist,
+		optimalItemRotation
 	};
 };

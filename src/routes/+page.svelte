@@ -1,13 +1,14 @@
 <script>
 	/** @type {import('./$types').PageData} */ export let data;
-	import MainApp from './main-app.svelte';
-	import Settings from './settings.svelte';
+	import MainApp from '$lib/components/main-app.svelte';
+	import Settings from '$lib/components/settings.svelte';
 
-	let numberOfSolutions = 3;
 	let selectedTabIndex = 0;
 </script>
 
-<div class="max-w-6xl mx-auto mt-24 px-12">
+<svelte:head><title>Packing Box Recommender</title></svelte:head>
+
+<div class="max-w-7xl 2xl:max-w-[96rem] mx-auto mt-24 px-12">
 	<div class="grid grid-cols-[repeat(2,100px)] gap-x-0.5 mb-4">
 		<label class={selectedTabIndex === 0 ? 'checked' : ''}>
 			<input type="radio" bind:group={selectedTabIndex} name="selectedTabIndex" value={0} />
@@ -18,11 +19,12 @@
 			Settings
 		</label>
 	</div>
-	{#if selectedTabIndex === 0}
-		<MainApp {numberOfSolutions} boxes={data.boxes} />
-	{:else if selectedTabIndex === 1}
-		<Settings bind:numberOfSolutions boxes={data.boxes} />
-	{/if}
+	<div class={selectedTabIndex === 0 ? '' : 'hidden'}>
+		<MainApp boxes={data.boxes} bind:orders={data.orders} />
+	</div>
+	<div class={selectedTabIndex === 1 ? '' : 'hidden'}>
+		<Settings boxes={data.boxes} />
+	</div>
 </div>
 
 <style>
