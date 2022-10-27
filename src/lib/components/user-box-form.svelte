@@ -1,5 +1,5 @@
 <script>
-	/** @type {import('../types').boxType[]} */ export let boxes;
+	/** @type {import('@src/types').boxType[]} */ export let boxes;
 </script>
 
 <div>

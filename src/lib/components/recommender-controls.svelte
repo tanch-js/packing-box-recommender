@@ -1,27 +1,44 @@
 <script>
 	import ItemInput from './item-input.svelte';
-	import DailyPackages from './daily-packages.svelte';
 	import { packingBoxRecommender } from '$lib/packing-box-recommender';
+	import { numberOfSolutions } from '@src/stores';
+	import DeclaredPackage from './declared-package.svelte';
 
-	/** @type {import('../types').itemType} */ let item = {
-		length: 10,
-		width: 10,
-		height: 6,
-		weight: 2,
+	/** @type {import('@src/types').boxType[]} */ export let boxes;
+	/** @type {any} */ export let order;
+	/** @type {import('@src/types').suitableBoxType[]} */ let suitableBoxes = [];
+	/** @type {import('@src/types').itemType} */ let item = {
+		length: parseFloat(order.ParcelLength),
+		width: parseFloat(order.ParcelWidth),
+		height: parseFloat(order.ParcelHeight),
+		weight: parseFloat(order.ParcelWeight),
 		fragileBuffer: 0
 	};
-	/** @type {import('../types').boxType[]} */ export let boxes;
-	/** @type {any} */ export let orders;
-	/** @type {import('../types').suitableBoxType[]} */ let suitableBoxes = [];
-	/** @type {number} */ export let numberOfSolutions;
-
-	$: suitableBoxes = packingBoxRecommender(item, boxes, numberOfSolutions);
+	function resetItemDimensions() {
+		item = {
+			length: parseFloat(order.ParcelLength),
+			width: parseFloat(order.ParcelWidth),
+			height: parseFloat(order.ParcelHeight),
+			weight: parseFloat(order.ParcelWeight),
+			fragileBuffer: 0
+		};
+	}
+	$: suitableBoxes = packingBoxRecommender(item, boxes, $numberOfSolutions);
 </script>
 
-<div class="flex flex-col">
-	<DailyPackages bind:orders />
-	<ItemInput bind:item />
-	<div class="mt-16">
+<div class="flex flex-col text-base">
+	<div class="flex">
+		<DeclaredPackage {order} />
+		<ItemInput bind:item />
+		<div class="pl-12 pt-8">
+			<button
+				class="border rounded-md bg-gray-500 hover:bg-gray-600 active:bg-gray-700 text-white py-1.5 px-3"
+				on:click={resetItemDimensions}
+				>Reset
+			</button>
+		</div>
+	</div>
+	<div class="my-16">
 		<p class="font-semibold">Suggested Boxes</p>
 		<div class="grid grid-cols-3 mt-1 border-t-2 border-gray-500 gap-y-4 divide-black">
 			{#each suitableBoxes as suitableBox (suitableBox.id)}

@@ -1,9 +1,8 @@
 <script>
 	/** @type {import('./$types').PageData} */ export let data;
-	import MainApp from './main-app.svelte';
-	import Settings from './settings.svelte';
+	import MainApp from '$lib/components/main-app.svelte';
+	import Settings from '$lib/components/settings.svelte';
 
-	let numberOfSolutions = 3;
 	let selectedTabIndex = 0;
 </script>
 
@@ -21,10 +20,10 @@
 		</label>
 	</div>
 	<div class={selectedTabIndex === 0 ? '' : 'hidden'}>
-		<MainApp {numberOfSolutions} boxes={data.boxes} bind:orders={data.orders} />
+		<MainApp boxes={data.boxes} bind:orders={data.orders} />
 	</div>
 	<div class={selectedTabIndex === 1 ? '' : 'hidden'}>
-		<Settings bind:numberOfSolutions boxes={data.boxes} />
+		<Settings boxes={data.boxes} />
 	</div>
 </div>
 
