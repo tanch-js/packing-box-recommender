@@ -18,8 +18,8 @@
 			</div>
 		{/each}
 	</div>
-	<div class="">
-		<p>Steps to update boxes</p>
+	<div class="mt-4">
+		<p class="font-semibold">Steps to update boxes</p>
 		<ol class="list-decimal">
 			<li>
 				Go to <a
@@ -29,7 +29,7 @@
 					rel="noopener noreferrer">JustShip my profile page</a
 				>
 			</li>
-			<li>Login with username: csops@justship.sg, <br />password: ...</li>
+			<li>Login with username: csops@justship.sg, <br />password: same as justship staff pw</li>
 			<li>Add/update boxes using the form</li>
 		</ol>
 	</div>
