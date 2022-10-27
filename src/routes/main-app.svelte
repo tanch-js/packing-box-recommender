@@ -1,5 +1,6 @@
 <script>
 	import ItemInput from './item-input.svelte';
+	import DailyPackages from './daily-packages.svelte';
 	import { packingBoxRecommender } from '$lib/packing-box-recommender';
 
 	/** @type {import('../types').itemType} */ let item = {
@@ -10,6 +11,7 @@
 		fragileBuffer: 0
 	};
 	/** @type {import('../types').boxType[]} */ export let boxes;
+	/** @type {any} */ export let orders;
 	/** @type {import('../types').suitableBoxType[]} */ let suitableBoxes = [];
 	/** @type {number} */ export let numberOfSolutions;
 
@@ -17,9 +19,8 @@
 </script>
 
 <div class="flex flex-col">
-	<div>
-		<ItemInput bind:item />
-	</div>
+	<DailyPackages bind:orders />
+	<ItemInput bind:item />
 	<div class="mt-16">
 		<p class="font-semibold">Suggested Boxes</p>
 		<div class="grid grid-cols-3 mt-1 border-t-2 border-gray-500 gap-y-4 divide-black">

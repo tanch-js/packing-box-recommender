@@ -21,3 +21,9 @@ export type suitableBoxType = boxType & {
 	twistedLength: number;
 	twistedWidth: number;
 };
+
+export type pickupDataType = {
+	name: string;
+	orderID: string;
+	images: string[];
+};

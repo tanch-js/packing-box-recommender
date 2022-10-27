@@ -4,7 +4,7 @@
 
 <div>
 	<p class="font-semibold">Boxes</p>
-	<div class="flex flex-col flex-wrap gap-y-1 overflow-auto max-h-40 border-t-2 border-gray-500">
+	<div class="flex flex-col flex-wrap gap-y-1 overflow-auto max-h-40 border-y-2 border-gray-500">
 		{#each boxes as box}
 			<div class="grid grid-cols-[120px_auto] border-r px-2">
 				<p class="max-w-[120px] truncate">{box.box_name}</p>
