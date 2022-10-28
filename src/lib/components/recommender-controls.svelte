@@ -39,7 +39,7 @@
 					on:click={resetItemDimensions}
 					>Reset
 				</button>
-				<form>
+				<!-- <form>
 					<label>
 						Upload pack images
 						<input
@@ -52,7 +52,7 @@
 							}}
 						/>
 					</label>
-				</form>
+				</form> -->
 			</div>
 		</div>
 	</div>
