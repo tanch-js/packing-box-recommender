@@ -23,6 +23,7 @@
 			fragileBuffer: 0
 		};
 	}
+	let uploadedImages = [];
 
 	$: suitableBoxes = packingBoxRecommender(item, boxes, $numberOfSolutions);
 </script>
@@ -31,12 +32,28 @@
 	<div class="flex">
 		<DeclaredPackage {order} />
 		<ItemInput bind:item />
-		<div class="pl-12 pt-8">
-			<button
-				class="border rounded-md bg-gray-500 hover:bg-gray-600 active:bg-gray-700 text-white py-1.5 px-3"
-				on:click={resetItemDimensions}
-				>Reset
-			</button>
+		<div>
+			<div class="pl-12 pt-8">
+				<button
+					class="border rounded-md bg-gray-500 hover:bg-gray-600 active:bg-gray-700 text-white py-1.5 px-3"
+					on:click={resetItemDimensions}
+					>Reset
+				</button>
+				<form>
+					<label>
+						Upload pack images
+						<input
+							type="file"
+							id={`${order.PackageID}-upload`}
+							accept="image/png, image/jpeg, image/jpg"
+							multiple={true}
+							on:input={function () {
+								console.log(this.files);
+							}}
+						/>
+					</label>
+				</form>
+			</div>
 		</div>
 	</div>
 	<div class="my-16">

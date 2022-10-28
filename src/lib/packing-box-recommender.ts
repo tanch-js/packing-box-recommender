@@ -48,21 +48,29 @@ export const packingBoxRecommender = (
 	const uncustomisedFedexBoxes = [];
 	const boxesUnderItemWeight = [];
 	const otherBoxes = [];
+	let adjustedItemWeight = Math.ceil(item.weight * 2) / 2;
+	if (adjustedItemWeight == 0) {
+		adjustedItemWeight = 0.5;
+	}
 	for (const box of fittingBoxes) {
 		//Fedex box will be charged at minimum 1kg
-		if (item.weight > 0.5 && item.weight >= box.volumetric && box.box_name.includes('Fedex')) {
+		if (
+			adjustedItemWeight > 0.5 &&
+			adjustedItemWeight >= box.volumetric &&
+			box.box_name.includes('Fedex')
+		) {
 			box.heightToCut = 0;
 			uncustomisedFedexBoxes.push(box);
 			continue;
 		}
-		if (item.weight >= box.volumetric) {
+		if (adjustedItemWeight >= box.volumetric) {
 			box.heightToCut = 0;
 			boxesUnderItemWeight.push(box);
 			continue;
 		}
 		const volumetricAfterCutting =
 			(box.box_length * box.box_width * (box.box_height - box.heightToCut)) / 5000;
-		if (item.weight >= volumetricAfterCutting) {
+		if (adjustedItemWeight >= volumetricAfterCutting) {
 			boxesUnderItemWeight.push(box);
 			continue;
 		}
@@ -93,8 +101,10 @@ export const packingBoxRecommender = (
 };
 
 const sortByVolumetricAfterCutting = (a: suitableBoxType, b: suitableBoxType) => {
-	const volumetricOfA = (a.box_length * a.box_width * (a.box_height - a.heightToCut)) / 5000;
-	const volumetricOfB = (b.box_length * b.box_width * (b.box_height - b.heightToCut)) / 5000;
+	const volumetricOfA =
+		Math.round(((a.box_length * a.box_width * (a.box_height - a.heightToCut)) / 5000) * 100) / 100;
+	const volumetricOfB =
+		Math.round(((b.box_length * b.box_width * (b.box_height - b.heightToCut)) / 5000) * 100) / 100;
 	if (volumetricOfA < volumetricOfB) {
 		return -1;
 	} else if (volumetricOfA > volumetricOfB) {

@@ -3,8 +3,6 @@
 	/**  @type {number }*/ export let i;
 	/** @type {import('@src/types').boxType[]} */ export let boxes;
 	/** @type {any} */ export let order;
-	export /** @type {boolean} */ let isFetching;
-	export /** @type {boolean} */ let fetchError;
 	let tabOpen = false;
 </script>
 
@@ -34,15 +32,7 @@
 <tr class={tabOpen ? '' : 'hidden'}>
 	<td class="" colspan="10">
 		<div class="py-2">
-			{#if !order.hasOwnProperty('images')}
-				<p>
-					{fetchError
-						? 'Error occured while fetching images'
-						: isFetching
-						? `Please wait, now fetching images...`
-						: 'Press Fetch Images Button to get images'}
-				</p>
-			{:else if order.images.length === 0}
+			{#if order.images.length === 0}
 				<p>No Image Found</p>
 			{:else}
 				<div class="max-w-full overflow-auto image-grid">

@@ -33,7 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"mysql2": "^2.3.3",
-		"puppeteer": "^19.1.2"
+		"cloudinary": "^1.32.0",
+		"mysql2": "^2.3.3"
 	}
 }
