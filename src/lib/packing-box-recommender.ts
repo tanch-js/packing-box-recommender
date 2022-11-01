@@ -54,11 +54,7 @@ export const packingBoxRecommender = (
 	}
 	for (const box of fittingBoxes) {
 		//Fedex box will be charged at minimum 1kg
-		if (
-			adjustedItemWeight > 0.5 &&
-			adjustedItemWeight >= box.volumetric &&
-			box.box_name.includes('Fedex')
-		) {
+		if (adjustedItemWeight > 0.5 && box.box_name.includes('Fedex')) {
 			box.heightToCut = 0;
 			uncustomisedFedexBoxes.push(box);
 			continue;
